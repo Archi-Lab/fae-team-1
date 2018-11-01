@@ -22,13 +22,13 @@ public class LocationHistoryApplication {
         SpringApplication.run(LocationHistoryApplication.class, args);
     }
 
-      @Bean
-        public Docket swaggerEmployeeApi() {
-            return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("thk.fae.urd.lh.controller"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(new ApiInfoBuilder().version("1.0").title("Location History API").description("Documentation Location History API v1.0").build());
-        }  
+    @Bean
+    public Docket swaggerEmployeeApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+            .select()
+            .apis(RequestHandlerSelectors.basePackage("thk.fae.urd.lh.controller"))
+            .paths(PathSelectors.any())
+            .build()
+            .apiInfo(new ApiInfoBuilder().version("1.0").title("Location History API").description("Documentation Location History API v1.0").build());
+    }
 }
