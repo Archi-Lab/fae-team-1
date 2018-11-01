@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import thk.fae.urd.ort.OrtTestHelper;
 import thk.fae.urd.ort.domain.KontaktdatenTestHelper;
 import thk.fae.urd.ort.domain.LocationTestHelper;
 

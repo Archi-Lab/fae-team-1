@@ -1,10 +1,11 @@
-package thk.fae.urd.ort.domain.ort;
+package thk.fae.urd.ort;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import thk.fae.urd.ort.domain.Location;
 import thk.fae.urd.ort.domain.LocationTestHelper;
+import thk.fae.urd.ort.domain.ort.Ort;
 
 public class OrtTestHelper {
 
