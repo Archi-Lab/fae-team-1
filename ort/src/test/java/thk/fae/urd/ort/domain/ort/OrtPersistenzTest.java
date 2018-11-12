@@ -3,77 +3,103 @@ package thk.fae.urd.ort.domain.ort;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.TransactionSystemException;
 
-import thk.fae.urd.ort.OrtTestHelper;
-import thk.fae.urd.ort.domain.KontaktdatenTestHelper;
+import thk.fae.urd.ort.domain.Location;
 import thk.fae.urd.ort.domain.LocationTestHelper;
+import thk.fae.urd.ort.domain.demenziellveraenderteperson.DemenziellVeraendertePerson;
+import thk.fae.urd.ort.domain.demenziellveraenderteperson.DemenziellVeraendertePersonRepo;
+import thk.fae.urd.ort.domain.demenziellveraenderteperson.DemenziellVeraendertePersonTestHelper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OrtPersistenzTest {
 
 	@Autowired
-	private OrtRepo repo;
+	private OrtRepo ortRepo;
+
+	@Autowired
+	private DemenziellVeraendertePersonRepo dvpRepo;
+
+	private DemenziellVeraendertePerson dvp;
+
+	@Before
+	public void before() {
+		this.dvp = DemenziellVeraendertePersonTestHelper.createDummyDemenziellVeraendertePerson();
+		this.dvpRepo.create(this.dvp);
+	}
 
 	@Test
 	public void testOKLocation() {
-		final Ort ort = OrtTestHelper.createDummyOrtWithLocation();
-		assertNull(ort.getGeofence());
+		final Ort ort = OrtTestHelper.createDummyOrtWithLocation(this.dvp);
+		assertNull(ort.getBereich());
 
-		final Ort savedOrt = this.repo.create(ort);
+		final Ort savedOrt = this.ortRepo.create(ort);
 		assertEquals(ort, savedOrt);
-		assertEquals(ort.getLocation(), savedOrt.getLocation());
-		assertNull(savedOrt.getGeofence());
+		assertNull(savedOrt.getBereich());
 
-		final Ort readOrt = this.repo.findById(ort.getId()).get();
+		final Ort readOrt = this.ortRepo.findById(ort.getId()).get();
 		assertEquals(ort, readOrt);
-		assertEquals(ort.getLocation(), readOrt.getLocation());
-		assertNull(readOrt.getGeofence());
+		assertNull(readOrt.getBereich());
 	}
 
 	@Test
 	public void testOKGeofence() {
-		final Ort ort = OrtTestHelper.createDummyOrtWithGeofence();
+		final Ort ort = OrtTestHelper.createDummyOrtWithGeofence(this.dvp);
 		assertNull(ort.getLocation());
 
-		final Ort savedOrt = this.repo.create(ort);
+		final Ort savedOrt = this.ortRepo.create(ort);
 		assertEquals(ort, savedOrt);
-		assertEquals(ort.getGeofence(), savedOrt.getGeofence());
 		assertNull(savedOrt.getLocation());
 
-		final Ort readOrt = this.repo.findById(ort.getId()).get();
+		final Ort readOrt = this.ortRepo.findById(ort.getId()).get();
 		assertEquals(ort, readOrt);
-		assertEquals(ort.getGeofence(), readOrt.getGeofence());
 		assertNull(readOrt.getLocation());
 	}
 
 	@Test
-	public void testOKKontaktdaten() {
-		final Ort ort = OrtTestHelper.createDummyOrtWithLocation();
-		ort.setKontaktdaten(KontaktdatenTestHelper.createDummyKontaktdaten());
-
-		final Ort savedOrt = this.repo.create(ort);
-		assertEquals(ort, savedOrt);
-		assertEquals(ort.getKontaktdaten(), savedOrt.getKontaktdaten());
-
-		final Ort readOrt = this.repo.findById(ort.getId()).get();
-		assertEquals(ort, readOrt);
-		assertEquals(ort.getKontaktdaten(), readOrt.getKontaktdaten());
+	public void testNotOkOrtWithLocationAndGeofence() {
+		final Ort ort = OrtTestHelper.createDummyOrtWithGeofence(this.dvp);
+		assertNotNull(ort.getBereich());
+		assertThrows(IllegalArgumentException.class,
+				() -> ort.setLocation(LocationTestHelper.createDummyRandomLocation()));
 	}
 
 	@Test
-	public void testNotOkOrtWithLocationAndGeofence() {
-		final Ort ort = OrtTestHelper.createDummyOrtWithGeofence();
-		assertNotNull(ort.getGeofence());
-		assertThrows(IllegalArgumentException.class, () -> ort.setLocation(LocationTestHelper.createDummyLocation()),
-				"Ein Ort kan nur einen Punkt oder in einen Bereich darstellen.");
+	public void testNotOkOrtWithGeofenceAndLocation() {
+		final Ort ort = OrtTestHelper.createDummyOrtWithLocation(this.dvp);
+		assertNotNull(ort.getLocation());
+
+		final List<Location> list = new ArrayList<>();
+		list.add(LocationTestHelper.createDummyRandomLocation());
+		assertThrows(IllegalArgumentException.class, () -> ort.setBereich(list));
+	}
+
+	@Test
+	public void testNotOkOrtWithGeofenceUnder3Locations() {
+		final Ort ort = new Ort();
+		final List<Location> list = new ArrayList<>();
+		list.add(LocationTestHelper.createDummyRandomLocation());
+		ort.setBereich(list);
+		assertNull(ort.getLocation());
+
+		assertThrows(TransactionSystemException.class, () -> this.ortRepo.create(ort));
+
+		final Optional<Ort> readOrt = this.ortRepo.findById(ort.getId());
+		assertFalse(readOrt.isPresent());
 	}
 
 }

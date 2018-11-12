@@ -3,6 +3,9 @@ package thk.fae.urd.ort.domain;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 @Embeddable
 public class Location {
 
@@ -41,12 +44,31 @@ public class Location {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if ((null == obj) || (obj.getClass() != Location.class)) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || !(obj instanceof Location)) {
 			return false;
 		}
+
 		final Location other = (Location) obj;
-		return this.getAltitude() == other.getAltitude() && this.getLatitude() == other.getLatitude()
-				&& this.getLongitude() == other.getLongitude();
+		final EqualsBuilder eb = new EqualsBuilder();
+
+		eb.append(this.getAltitude(), other.getAltitude());
+		eb.append(this.getLatitude(), other.getLatitude());
+		eb.append(this.getLongitude(), other.getLongitude());
+
+		return eb.isEquals();
 	}
 
+	@Override
+	public int hashCode() {
+		final HashCodeBuilder hcb = new HashCodeBuilder();
+
+		hcb.append(this.getAltitude());
+		hcb.append(this.getLatitude());
+		hcb.append(this.getLongitude());
+
+		return hcb.toHashCode();
+	}
 }

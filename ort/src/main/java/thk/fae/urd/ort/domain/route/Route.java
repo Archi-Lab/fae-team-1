@@ -1,9 +1,8 @@
-package thk.fae.urd.ort.domain.ort;
+package thk.fae.urd.ort.domain.route;
 
 import java.util.List;
 
 import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
@@ -11,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.validator.constraints.Length;
 
@@ -21,41 +19,21 @@ import thk.fae.urd.ort.domain.demenziellveraenderteperson.DemenziellVeraenderteP
 import thk.fae.urd.ort.utils.EqualsBuilderExtension;
 
 @Entity
-public class Ort extends EntityUUID4 {
-
-	private final static String LOCATION_BEREICH_MESSAGE = "Ein Ort kann entweder durch einen Punkt oder als ein Bereich dargestellt werden.";
+public class Route extends EntityUUID4 {
 
 	@Length(min = 1)
 	private String name;
 
-	@Embedded
-	private Location location;
-
-	@Size(min = 3, message = "Ein Bereich besteht aus mindestens 3 Punkten.")
+	@Size(min = 2, message = "Eine Route besteht mindestens aus 2 Locations")
 	@ElementCollection(targetClass = Location.class, fetch = FetchType.EAGER)
-	@JoinTable(name = "GEOFENCE_BORDER")
-	private List<Location> bereich;
+	@JoinTable(name = "ROUTE_LOCATIONS")
+	private List<Location> locations;
 
 	@NotNull
 	@ManyToOne
 	private DemenziellVeraendertePerson demenziellVeraendertePerson;
 
-	public Location getLocation() {
-		return this.location;
-	}
-
-	public void setLocation(final Location location) {
-		Validate.isTrue(this.bereich == null, LOCATION_BEREICH_MESSAGE);
-		this.location = location;
-	}
-
-	public List<Location> getBereich() {
-		return this.bereich == null || this.bereich.isEmpty() ? null : this.bereich;
-	}
-
-	public void setBereich(final List<Location> bereich) {
-		Validate.isTrue(this.location == null, LOCATION_BEREICH_MESSAGE);
-		this.bereich = bereich;
+	public Route() {
 	}
 
 	public String getName() {
@@ -64,6 +42,14 @@ public class Ort extends EntityUUID4 {
 
 	public void setName(final String name) {
 		this.name = name;
+	}
+
+	public List<Location> getLocations() {
+		return this.locations == null || this.locations.isEmpty() ? null : this.locations;
+	}
+
+	public void setLocations(final List<Location> locations) {
+		this.locations = locations;
 	}
 
 	public DemenziellVeraendertePerson getDemenziellVeraendertePerson() {
@@ -79,17 +65,16 @@ public class Ort extends EntityUUID4 {
 		if (this == obj) {
 			return true;
 		}
-		if (obj == null || !(obj instanceof Ort)) {
+		if (obj == null || !(obj instanceof Route)) {
 			return false;
 		}
 
-		final Ort other = (Ort) obj;
+		final Route other = (Route) obj;
 		final EqualsBuilderExtension eb = new EqualsBuilderExtension();
 		eb.appendSuper(super.equals(obj));
 
 		eb.append(this.getName(), other.getName());
-		eb.append(this.getLocation(), other.getLocation());
-		eb.append(this.getBereich(), other.getBereich());
+		eb.append(this.getLocations(), other.getLocations());
 
 		return eb.isEquals();
 	}
@@ -100,8 +85,8 @@ public class Ort extends EntityUUID4 {
 		hcb.appendSuper(super.hashCode());
 
 		hcb.append(this.getName());
-		hcb.append(this.getLocation());
 
 		return hcb.toHashCode();
 	}
+
 }

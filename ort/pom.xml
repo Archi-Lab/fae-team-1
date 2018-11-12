@@ -46,11 +46,16 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Test -->
+		<!-- Projekt -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			</dependency>
+
+		<!-- Testing -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.3.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
