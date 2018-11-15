@@ -9,9 +9,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.hateoas.Identifiable;
 
 @MappedSuperclass
-public class EntityUUID4 {
+public class EntityUUID4 implements Identifiable<UUID> {
 
 	@JsonIgnore
 	@Id
