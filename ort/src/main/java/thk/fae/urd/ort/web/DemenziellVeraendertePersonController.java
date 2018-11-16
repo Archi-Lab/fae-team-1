@@ -35,6 +35,8 @@ public class DemenziellVeraendertePersonController {
         var r = new Resource<>(dvp);
         r.add(entityLinks.linkForSingleResource(dvp).slash("/routen").withRel("CreateRoute"));
         r.add(entityLinks.linkForSingleResource(dvp).slash("/routen").withRel("ReadRouten"));
+        r.add(entityLinks.linkForSingleResource(dvp).slash("/orte").withRel("CreateOrt"));
+        r.add(entityLinks.linkForSingleResource(dvp).slash("/orte").withRel("ReadOrt"));
 
         return ResponseEntity.ok(r);
     }

@@ -53,6 +53,17 @@ public class RouteController {
         return ResponseEntity.ok(new Resource<>(route));
     }
 
+    @GetMapping(path = "/routen/{routeId}")
+    public HttpEntity<Resource<Route>> ReadRoute(@PathVariable("routeId")UUID routeId) {
+        var route = routeRepo.findById(routeId).get();
+        var r = new Resource<>(route);
+        r.add(entityLinks.linkToSingleResource(route).withSelfRel());
+        r.add(entityLinks.linkToSingleResource(route).withRel("UpdateRoute"));
+        r.add(entityLinks.linkToSingleResource(route).withRel("DeleteRoute"));
+
+        return ResponseEntity.ok(r);
+    }
+
     @PutMapping(path = "/routen/{routeId}")
     public HttpEntity<Resource<Route>> UpdateRoute(@PathVariable("routeId")UUID routeId, @RequestBody Route route) {
         var r = routeRepo.findById(routeId).get();

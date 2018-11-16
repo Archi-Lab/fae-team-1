@@ -7,9 +7,11 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import thk.fae.urd.ort.domain.demenziellveraenderteperson.DemenziellVeraendertePerson;
 import thk.fae.urd.ort.domain.demenziellveraenderteperson.DemenziellVeraendertePersonRepo;
+import thk.fae.urd.ort.domain.ort.Ort;
 import thk.fae.urd.ort.domain.route.Route;
 import thk.fae.urd.ort.domain.route.RouteRepo;
 import thk.fae.urd.ort.repo.DemenziellVeraendertePersonRepoDBBase;
+import thk.fae.urd.ort.repo.ort.OrtRepoDBBase;
 import thk.fae.urd.ort.repo.route.RouteRepoDBBase;
 
 import java.util.UUID;
@@ -22,6 +24,9 @@ public class DemoData {
 
     private final @NonNull
     RouteRepoDBBase routenRepo;
+
+    private final @NonNull
+    OrtRepoDBBase ortRepo;
 
     @EventListener
     public void appReady(ApplicationReadyEvent event) {
@@ -37,6 +42,14 @@ public class DemoData {
         routenRepo.save(r1);
 
         dvp.addRoute(r1);
+
+        var o1 = new Ort();
+        o1.setName("Demo Ort 1");
+        o1.setDemenziellVeraendertePerson(dvp);
+        ortRepo.save(o1);
+
+        dvp.addOrt(o1);
+
         dvpRepo.save(dvp);
     }
 }
