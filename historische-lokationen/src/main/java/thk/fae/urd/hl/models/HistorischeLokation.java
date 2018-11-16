@@ -1,4 +1,4 @@
-package thk.fae.urd.hl.model;
+package thk.fae.urd.hl.models;
 
 import java.time.Instant;
 import javax.persistence.*;

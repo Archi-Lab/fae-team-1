@@ -1,7 +1,7 @@
 package thk.fae.urd.hl.controller;
 
-import thk.fae.urd.hl.model.HistorischeLokation;
-import thk.fae.urd.hl.repo.HistorischeLokationenRepository;
+import thk.fae.urd.hl.models.HistorischeLokation;
+import thk.fae.urd.hl.repos.HistorischeLokationenRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

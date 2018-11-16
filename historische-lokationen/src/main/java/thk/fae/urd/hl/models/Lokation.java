@@ -1,4 +1,4 @@
-package thk.fae.urd.hl.model;
+package thk.fae.urd.hl.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

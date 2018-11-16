@@ -1,5 +1,4 @@
 /target/
-/bin/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -24,4 +23,3 @@
 /dist/
 /nbdist/
 /.nb-gradle/
-nbactions.xml
