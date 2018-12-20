@@ -6,6 +6,8 @@ services:
       - postgres
     expose:
       - 80
+    networks:
+      - fae-message-broker_backend
 
   postgres:
     image: postgres
@@ -15,6 +17,8 @@ services:
       - POSTGRES_PASSWORD=test
       - POSTGRES_USER=test
       - POSTGRES_DB=ort
+    networks:
+      - fae-message-broker_backend
 
   proxy:
     image: dockercloud/haproxy:1.6.7
@@ -24,3 +28,9 @@ services:
       - web
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - fae-message-broker_backend
+
+networks:
+  fae-message-broker_backend:
+    external: true
