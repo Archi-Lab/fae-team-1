@@ -2,5 +2,25 @@ version: '3'
 services:
   web:
     build: .
+    depends_on:
+      - postgres
+    expose:
+      - 80
+
+  postgres:
+    image: postgres
     ports:
-      - "8081:8080"
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_USER=test
+      - POSTGRES_DB=ort
+
+  proxy:
+    image: dockercloud/haproxy:1.6.7
+    ports:
+      - 8081:80
+    links:
+      - web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
