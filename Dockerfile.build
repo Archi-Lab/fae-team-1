@@ -8,4 +8,3 @@ RUN mkdir -p /src
 WORKDIR /src
 
 CMD ["mvn", "clean", "compile", "package"]
-

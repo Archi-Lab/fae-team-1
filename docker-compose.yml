@@ -1,36 +1,51 @@
 version: '3'
 services:
-  web:
-    build: .
+  ungewoehnlicher-aufenthaltsort:
+    container_name: ungewoehnlicher-aufenthaltsort
+    build:
+      context: .
+    image: ungewoehnlicher-aufenthaltsort:latest
     depends_on:
       - postgres
-    expose:
-      - 80
+    ports:
+      - 45222
+    environment:
+     - SERVICE_PORTS=45222
+    deploy:
+        replicas: 2
     networks:
-      - fae-message-broker_backend
+      - fae-ua
 
   postgres:
+    container_name: ungewoehnlicher-aufenthaltsort-postgres
     image: postgres
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=test
       - POSTGRES_USER=test
-      - POSTGRES_DB=ort
+      - POSTGRES_DB=ungewoehnlicher-aufenthaltsort
     networks:
-      - fae-message-broker_backend
+      - fae-ua
 
   proxy:
-    image: dockercloud/haproxy:1.6.7
-    ports:
-      - 8081:80
-    links:
-      - web
+    container_name: ungewoehnlicher-aufenthaltsort-proxy
+    image: dockercloud/haproxy
+    depends_on:
+      - ungewoehnlicher-aufenthaltsort
+    environment:
+      - BALANCE=leastconn
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 80:80
+    deploy:
+        placement:
+            constraints: [node.role == manager]
     networks:
-      - fae-message-broker_backend
+      - fae-ua
+     
 
 networks:
-  fae-message-broker_backend:
-    external: true
+  fae-ua:
+    driver: overlay
