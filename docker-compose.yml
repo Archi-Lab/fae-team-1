@@ -15,6 +15,7 @@ services:
         replicas: 2
     networks:
       - fae-ua
+      - fae-message-broker_backend
 
   postgres:
     container_name: ungewoehnlicher-aufenthaltsort-postgres
@@ -45,7 +46,8 @@ services:
     networks:
       - fae-ua
      
-
 networks:
   fae-ua:
     driver: overlay
+  fae-message-broker_backend:
+    external: true

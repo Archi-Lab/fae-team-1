@@ -5,30 +5,45 @@ Der Ungewöhnlicher-Aufenthalt Service umfasst die Folgenden Features:
   - Erkennung und Meldung von ungewöhnlichen Aufenthaltsorten
 
 ## Installation
-Zur Installation müssen die Quelldateien zunächst mittles Maven kompiliert werden, anschließend kann der Service über die beiliegende docker-compose.yml durch Docker gestartet werden.
+Zur Installation müssen die Quelldateien zunächst mittles Maven kompiliert werden und anschließend das Image erstellt werden.
 ```sh
 $ mvn package
 $ docker-compose build
+```
+
+Wir verwenden Docker Swarm und benötigen aus diesem Grund eine geeignete Version eines Kafka Containers.
+Dieser Kann durch das beiliegende swarm-broker.yml erstellt werden. Zuvor muss Docker jedoch in den Swarm Modus versetzt werden.
+```sh
 $ docker swarm init
+```
+
+Anschließend kann der Kafka Container erstellt und ausgeführt werden:
+```sh
+$ docker-compose -f swarm-broker.yml -p fae-message-broker up -d
+```
+
+Zuletzt wird der Ungewöhnlicher-Aufenthalt Service gestartet:
+```sh
 $ docker stack deploy --compose-file=docker-compose.yml fae-prod
 ```
-Der Ungewöhnlicher-Aufenthalt Service benötigt zudem eine Reihe von anderen Komponenten, bevor er Ordnungsgemäß funktionieren kann. Welche dies sind und wie Sie konfiguriert werden müssen ist im Folgenden erläutert.
+Standardmäßig werden zwei Instanzen des Ungewöhnlicher-Aufenthalt Service gestartet. Diesen steht eine Postgres Instanz als Datenbank zur Verfügung. Die Insanzen des Ungewöhnlicher-Aufenthalt Service sind über einen HAProxy als Loadbalancer auf Port 80 (Host) erreichbar. Eine beliebige Skalierung der Instanzen ist über den folgenden Docker Befehl möglich:
+```sh
+$ docker service scale fae-prod_ungewoehnlicher-aufenthaltsort=4
+```
+Die Anzahl der Instanzen kann hierbei beliebig verändert werden.
+
+Das stoppen der Services erfolgt durch:
+```sh
+$ docker stack rm fae-prod
+$ docker-compose -f swarm-broker.yml -p fae-message-broker stop
+```
+
+Der Ungewöhnlicher-Aufenthalt Service benötigt zudem eine Reihe von anderen Komponenten, bevor er Ordnungsgemäß funktionieren kann.
 
 ### Erforderliche Komponenten aus anderen Sub-Domänen
-
-* [Message Broker][FAE-kafka] - Kafka Message Broker
 * [Draußen Ortung][FAE-ortung] - Publiziert aktuelle Aufenthaltsorter von GPS-Trackern
 * [Dementiell Veränderte Person][FAE-dvp] - Verwaltet Daten über dementiell veränderte Personen
 
-### Datenbank
-Das beiliegende docker-compose Skript konfiguriert neben dem Ungewöhnlicher-Aufenthaltsort Service zusätzliche eine Postgres Instanz.
-
-### Netzwerk Konfiguartion
-Dies sind die Hostnamen und Ports, unter welchen die anderen Services erwartet werden:
-| Port | Hostname | Service |
-| ------ | ------ | ------ |
-| 5432 | postgres | Postgres Datenbank |
-| xxxx | xxxx | xxxx |
 
 ## Benutzung
 Hier sollte die Benutzung des Services evtl. durch ein Beispiel unterstützt beschrieben werden.
