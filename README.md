@@ -11,31 +11,32 @@ $ mvn package
 $ docker-compose build
 ```
 
-Wir verwenden Docker Swarm und benötigen aus diesem Grund eine geeignete Version eines Kafka Containers.
-Dieser Kann durch das beiliegende swarm-broker.yml erstellt werden. Zuvor muss Docker jedoch in den Swarm Modus versetzt werden.
+Wir verwenden Docker Swarm und benötigen aus diesem Grund eine Swarm fähige Version von Kafka.
+Dieser Kann durch das beiliegende kafka-swarm.yml erstellt werden. Zuvor muss Docker jedoch in den Swarm Modus versetzt werden.
 ```sh
 $ docker swarm init
 ```
 
-Anschließend kann der Kafka Container erstellt und ausgeführt werden:
+Anschließend kann der Kafka Swarm Service erstellt und ausgeführt werden:
 ```sh
-$ docker-compose -f swarm-broker.yml -p fae-message-broker up -d
+$ docker stack deploy -c kafka-swarm.yml fae-message-broker
 ```
 
-Zuletzt wird der Ungewöhnlicher-Aufenthalt Service gestartet:
+Der Ungewöhnlicher-Aufenthalt Service wird auf gleichem Wege gestartet:
 ```sh
-$ docker stack deploy --compose-file=docker-compose.yml fae-prod
+$ docker stack deploy -c docker-compose.yml fae-ua
 ```
-Standardmäßig werden zwei Instanzen des Ungewöhnlicher-Aufenthalt Service gestartet. Diesen steht eine Postgres Instanz als Datenbank zur Verfügung. Die Insanzen des Ungewöhnlicher-Aufenthalt Service sind über einen HAProxy als Loadbalancer auf Port 80 (Host) erreichbar. Eine beliebige Skalierung der Instanzen ist über den folgenden Docker Befehl möglich:
+
+Standardmäßig werden zwei Instanzen des Ungewöhnlicher-Aufenthalt Service gestartet. Diesen steht eine Postgres Instanz als Datenbank zur Verfügung. Die Instanzen des Ungewöhnlicher-Aufenthalt Service sind über einen HAProxy als Loadbalancer derzeit über Port 80 (Host) erreichbar. Eine beliebige Skalierung der Instanzen ist über den folgenden Docker Befehl möglich:
 ```sh
-$ docker service scale fae-prod_ungewoehnlicher-aufenthaltsort=4
+$ docker service scale fae-ua_ungewoehnlicher-aufenthaltsort=4
 ```
 Die Anzahl der Instanzen kann hierbei beliebig verändert werden.
 
 Das stoppen der Services erfolgt durch:
 ```sh
-$ docker stack rm fae-prod
-$ docker-compose -f swarm-broker.yml -p fae-message-broker stop
+$ docker stack rm fae-ua
+$ docker stack rm fae-message-broker
 ```
 
 Der Ungewöhnlicher-Aufenthalt Service benötigt zudem eine Reihe von anderen Komponenten, bevor er Ordnungsgemäß funktionieren kann.
