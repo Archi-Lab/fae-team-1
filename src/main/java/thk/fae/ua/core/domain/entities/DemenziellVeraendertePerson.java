@@ -20,25 +20,37 @@ import thk.fae.ua.core.domain.valueobjects.Tracker;
 @Entity
 public class DemenziellVeraendertePerson extends EntityUUID4 {
 
-	@Embedded
 	@Getter
 	@Setter
+	private Long version;
+
+	@Getter
+	@Setter
+	@Embedded
 	private Tracker tracker;
 
+	@Getter
+	@Setter
+	private String vorname;
+
+	@Getter
+	@Setter
+	private String nachname;
+
+	@Getter
+	@Setter
 	@Fetch(value = FetchMode.SUBSELECT)
 	@OneToMany(mappedBy = "demenziellVeraendertePerson", fetch = FetchType.EAGER)
 	private List<Ort> orte;
 
+	@Getter
+	@Setter
 	@Fetch(value = FetchMode.SUBSELECT)
 	@OneToMany(mappedBy = "demenziellVeraendertePerson", fetch = FetchType.EAGER)
 	private List<Route> routen;
 
-	public List<Ort> getOrte() {
-		return this.orte;
-	}
+	public DemenziellVeraendertePerson() {
 
-	public void setOrte(final List<Ort> orte) {
-		this.orte = orte;
 	}
 
 	public void addOrt(final Ort ort) {
@@ -46,14 +58,6 @@ public class DemenziellVeraendertePerson extends EntityUUID4 {
 			this.orte = new ArrayList<>();
 		}
 		this.orte.add(ort);
-	}
-
-	public List<Route> getRouten() {
-		return this.routen;
-	}
-
-	public void setRouten(final List<Route> routen) {
-		this.routen = routen;
 	}
 
 	public void addRoute(final Route route) {
@@ -75,6 +79,10 @@ public class DemenziellVeraendertePerson extends EntityUUID4 {
 		final EqualsBuilderExtension eb = new EqualsBuilderExtension();
 		eb.appendSuper(super.equals(obj));
 
+		eb.append(this.getVersion(), other.getVersion());
+		eb.append(this.getTracker(), other.getTracker());
+		eb.append(this.getVorname(), other.getVorname());
+		eb.append(this.getNachname(), other.getNachname());
 		eb.append(this.getOrte(), other.getOrte());
 		eb.append(this.getRouten(), other.getRouten());
 

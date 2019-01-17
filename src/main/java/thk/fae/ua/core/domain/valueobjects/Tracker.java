@@ -1,9 +1,20 @@
 package thk.fae.ua.core.domain.valueobjects;
 
-import thk.fae.ua.core.domain.common.EntityUUID4;
+import lombok.Getter;
 
 import javax.persistence.Embeddable;
+import java.util.UUID;
 
 @Embeddable
-public class Tracker extends EntityUUID4 {
+public class Tracker {
+
+    @Getter
+    private UUID trackerId;
+
+    public Tracker() {
+    }
+
+    public Tracker(UUID trackerId) {
+        this.trackerId = trackerId;
+    }
 }

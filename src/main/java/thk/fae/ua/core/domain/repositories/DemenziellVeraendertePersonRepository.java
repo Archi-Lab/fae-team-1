@@ -9,4 +9,6 @@ public interface DemenziellVeraendertePersonRepository {
 	Optional<DemenziellVeraendertePerson> findById(UUID id);
 	Iterable<DemenziellVeraendertePerson> findAll();
 	DemenziellVeraendertePerson save(final DemenziellVeraendertePerson dvp);
+	void deleteById(UUID id);
+	boolean existsById(UUID id);
 }

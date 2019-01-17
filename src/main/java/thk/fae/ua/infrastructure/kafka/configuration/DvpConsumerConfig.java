@@ -10,7 +10,7 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import thk.fae.ua.infrastructure.kafka.models.dvp.DvpUpdateMessageModel;
+import thk.fae.ua.infrastructure.kafka.models.dvp.DvpMessageModel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +36,7 @@ public class DvpConsumerConfig {
 
 
     @Bean
-    public ConsumerFactory<String, DvpUpdateMessageModel> consumerFactory() {
+    public ConsumerFactory<String, DvpMessageModel> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, keyDeserializer);
@@ -47,13 +47,13 @@ public class DvpConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(
                 props,
                 new StringDeserializer(),
-                new JsonDeserializer<>(DvpUpdateMessageModel.class)
+                new JsonDeserializer<>(DvpMessageModel.class)
         );
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, DvpUpdateMessageModel> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, DvpUpdateMessageModel> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, DvpMessageModel> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, DvpMessageModel> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }

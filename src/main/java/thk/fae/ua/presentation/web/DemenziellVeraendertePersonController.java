@@ -1,10 +1,9 @@
 package thk.fae.ua.presentation.web;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import thk.fae.ua.core.domain.entities.DemenziellVeraendertePerson;
 import thk.fae.ua.core.domain.repositories.DemenziellVeraendertePersonRepository;
 
@@ -23,7 +22,12 @@ public class DemenziellVeraendertePersonController {
     }
 
     @GetMapping(path="/{dvpId}")
-    public DemenziellVeraendertePerson ReadDVP(@PathVariable("dvpId")UUID dvpId) {
-        return dvpRepository.findById(dvpId).get();
+    public ResponseEntity<DemenziellVeraendertePerson> ReadDVP(@PathVariable("dvpId")UUID dvpId) {
+        var dvp = dvpRepository.findById(dvpId);
+        if(dvp.isPresent()) {
+            return new ResponseEntity<>( dvp.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 }

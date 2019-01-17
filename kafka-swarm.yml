@@ -33,3 +33,4 @@ services:
 networks:
   backend:
     driver: overlay
+    attachable: true
