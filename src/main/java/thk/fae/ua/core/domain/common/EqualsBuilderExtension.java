@@ -1,4 +1,4 @@
-package thk.fae.ua.utils;
+package thk.fae.ua.core.domain.common;
 
 import java.util.List;
 

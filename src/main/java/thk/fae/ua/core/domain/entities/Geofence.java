@@ -1,6 +1,7 @@
-package thk.fae.ua.core.domain.valueobjects;
+package thk.fae.ua.core.domain.entities;
 
 import thk.fae.ua.core.domain.common.EntityUUID4;
+import thk.fae.ua.core.domain.valueobjects.Lokation;
 
 import java.util.List;
 

@@ -6,10 +6,10 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import thk.fae.ua.core.domain.entities.DemenziellVeraendertePerson;
-import thk.fae.ua.core.domain.repositories.DemenziellVeraendertePersonRepo;
+import thk.fae.ua.core.domain.repositories.DemenziellVeraendertePersonRepository;
 
 @Repository
-public class DemenziellVeraendertePersonRepoDBImpl implements DemenziellVeraendertePersonRepo {
+public class DemenziellVeraendertePersonRepoDBImpl implements DemenziellVeraendertePersonRepository {
 
 	private final DemenziellVeraendertePersonRepoDBBase dbBase;
 
@@ -23,7 +23,12 @@ public class DemenziellVeraendertePersonRepoDBImpl implements DemenziellVeraende
 	}
 
 	@Override
-	public DemenziellVeraendertePerson create(final DemenziellVeraendertePerson dvp) {
+	public Iterable<DemenziellVeraendertePerson> findAll() {
+		return this.dbBase.findAll();
+	}
+
+	@Override
+	public DemenziellVeraendertePerson save(final DemenziellVeraendertePerson dvp) {
 		return this.dbBase.save(dvp);
 	}
 

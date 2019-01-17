@@ -5,8 +5,7 @@ import thk.fae.ua.core.domain.entities.Route;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface RouteRepo {
+public interface RouteRepository {
 	Optional<Route> findById(UUID id);
-
-	Route create(final Route route);
+	Route save(final Route route);
 }

@@ -5,8 +5,8 @@ import thk.fae.ua.core.domain.entities.DemenziellVeraendertePerson;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface DemenziellVeraendertePersonRepo {
+public interface DemenziellVeraendertePersonRepository {
 	Optional<DemenziellVeraendertePerson> findById(UUID id);
-
-	DemenziellVeraendertePerson create(final DemenziellVeraendertePerson dvp);
+	Iterable<DemenziellVeraendertePerson> findAll();
+	DemenziellVeraendertePerson save(final DemenziellVeraendertePerson dvp);
 }

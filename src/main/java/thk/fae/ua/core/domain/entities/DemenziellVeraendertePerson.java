@@ -2,22 +2,28 @@ package thk.fae.ua.core.domain.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import thk.fae.ua.core.domain.common.EntityUUID4;
-import thk.fae.ua.utils.EqualsBuilderExtension;
+import thk.fae.ua.core.domain.common.EqualsBuilderExtension;
+import thk.fae.ua.core.domain.valueobjects.Tracker;
 
 @Entity
 public class DemenziellVeraendertePerson extends EntityUUID4 {
 
-	private UUID trackerId;
+	@Embedded
+	@Getter
+	@Setter
+	private Tracker tracker;
 
 	@Fetch(value = FetchMode.SUBSELECT)
 	@OneToMany(mappedBy = "demenziellVeraendertePerson", fetch = FetchType.EAGER)

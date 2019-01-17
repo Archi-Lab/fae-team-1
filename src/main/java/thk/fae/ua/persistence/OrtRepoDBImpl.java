@@ -6,10 +6,10 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import thk.fae.ua.core.domain.entities.Ort;
-import thk.fae.ua.core.domain.repositories.OrtRepo;
+import thk.fae.ua.core.domain.repositories.OrtRepository;
 
 @Repository
-public class OrtRepoDBImpl implements OrtRepo {
+public class OrtRepoDBImpl implements OrtRepository {
 
 	private final OrtRepoDBBase dbBase;
 
@@ -23,7 +23,7 @@ public class OrtRepoDBImpl implements OrtRepo {
 	}
 
 	@Override
-	public Ort create(final Ort ort) {
+	public Ort save(final Ort ort) {
 		return this.dbBase.save(ort);
 	}
 

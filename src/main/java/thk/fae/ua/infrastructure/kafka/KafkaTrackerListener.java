@@ -11,6 +11,6 @@ public class KafkaTrackerListener {
 
     @KafkaListener(topics = "${kafka.topics.tracker}")
     public void consume(String payload) {
-        LOGGER.info("received payload='{}'", payload);
+        // LOGGER.info("received payload='{}'", payload);
     }
 }

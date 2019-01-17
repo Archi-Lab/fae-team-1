@@ -10,7 +10,7 @@ public class KafkaDvpListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaDvpListener.class);
 
     @KafkaListener(topics = "${kafka.topics.dvp}")
-    public void consume(String payload) {
-        LOGGER.info("received payload='{}'", payload);
+    public void consume(DvpUpdateMessage message) {
+        LOGGER.info("RECEIVED DVP");
     }
 }

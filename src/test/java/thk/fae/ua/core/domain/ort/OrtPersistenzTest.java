@@ -19,29 +19,29 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.TransactionSystemException;
 
 import thk.fae.ua.core.domain.LocationTestHelper;
-import thk.fae.ua.core.domain.repositories.OrtRepo;
+import thk.fae.ua.core.domain.repositories.OrtRepository;
 import thk.fae.ua.core.domain.demenziellveraenderteperson.DemenziellVeraendertePersonTestHelper;
 import thk.fae.ua.core.domain.entities.Ort;
 import thk.fae.ua.core.domain.valueobjects.Lokation;
 import thk.fae.ua.core.domain.entities.DemenziellVeraendertePerson;
-import thk.fae.ua.core.domain.repositories.DemenziellVeraendertePersonRepo;
+import thk.fae.ua.core.domain.repositories.DemenziellVeraendertePersonRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OrtPersistenzTest {
 
 	@Autowired
-	private OrtRepo ortRepo;
+	private OrtRepository ortRepo;
 
 	@Autowired
-	private DemenziellVeraendertePersonRepo dvpRepo;
+	private DemenziellVeraendertePersonRepository dvpRepo;
 
 	private DemenziellVeraendertePerson dvp;
 
 	@Before
 	public void before() {
 		this.dvp = DemenziellVeraendertePersonTestHelper.createDummyDemenziellVeraendertePerson();
-		this.dvpRepo.create(this.dvp);
+		this.dvpRepo.save(this.dvp);
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class OrtPersistenzTest {
 		final Ort ort = OrtTestHelper.createDummyOrtWithLocation(this.dvp);
 		assertNull(ort.getBereich());
 
-		final Ort savedOrt = this.ortRepo.create(ort);
+		final Ort savedOrt = this.ortRepo.save(ort);
 		assertEquals(ort, savedOrt);
 		assertNull(savedOrt.getBereich());
 
@@ -63,7 +63,7 @@ public class OrtPersistenzTest {
 		final Ort ort = OrtTestHelper.createDummyOrtWithGeofence(this.dvp);
 		assertNull(ort.getLokation());
 
-		final Ort savedOrt = this.ortRepo.create(ort);
+		final Ort savedOrt = this.ortRepo.save(ort);
 		assertEquals(ort, savedOrt);
 		assertNull(savedOrt.getLokation());
 
@@ -98,7 +98,7 @@ public class OrtPersistenzTest {
 		ort.setBereich(list);
 		assertNull(ort.getLokation());
 
-		assertThrows(TransactionSystemException.class, () -> this.ortRepo.create(ort));
+		assertThrows(TransactionSystemException.class, () -> this.ortRepo.save(ort));
 
 		final Optional<Ort> readOrt = this.ortRepo.findById(ort.getId());
 		assertFalse(readOrt.isPresent());

@@ -6,10 +6,10 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import thk.fae.ua.core.domain.entities.Route;
-import thk.fae.ua.core.domain.repositories.RouteRepo;
+import thk.fae.ua.core.domain.repositories.RouteRepository;
 
 @Repository
-public class RouteRepoDBImpl implements RouteRepo {
+public class RouteRepoDBImpl implements RouteRepository {
 
 	private final RouteRepoDBBase dbBase;
 
@@ -23,7 +23,7 @@ public class RouteRepoDBImpl implements RouteRepo {
 	}
 
 	@Override
-	public Route create(final Route route) {
+	public Route save(final Route route) {
 		return this.dbBase.save(route);
 	}
 }

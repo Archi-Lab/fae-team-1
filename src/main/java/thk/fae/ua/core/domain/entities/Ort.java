@@ -17,7 +17,7 @@ import org.hibernate.validator.constraints.Length;
 
 import thk.fae.ua.core.domain.valueobjects.Lokation;
 import thk.fae.ua.core.domain.common.EntityUUID4;
-import thk.fae.ua.utils.EqualsBuilderExtension;
+import thk.fae.ua.core.domain.common.EqualsBuilderExtension;
 
 @Entity
 public class Ort extends EntityUUID4 {

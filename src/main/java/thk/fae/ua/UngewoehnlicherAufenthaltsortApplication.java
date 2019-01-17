@@ -8,6 +8,7 @@ public class UngewoehnlicherAufenthaltsortApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(UngewoehnlicherAufenthaltsortApplication.class, args);
+
 	}
 
 }
