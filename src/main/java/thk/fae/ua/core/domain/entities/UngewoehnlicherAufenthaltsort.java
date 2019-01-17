@@ -3,6 +3,7 @@ package thk.fae.ua.core.domain.entities;
 import thk.fae.ua.core.domain.common.EntityUUID4;
 import thk.fae.ua.core.domain.valueobjects.Lokation;
 
+import javax.persistence.Basic;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import java.time.Instant;
@@ -13,6 +14,6 @@ public class UngewoehnlicherAufenthaltsort extends EntityUUID4 {
     private DemenziellVeraendertePerson demenziellVeraendertePerson;
     @Embedded
     private Lokation lokation;
-    @Embedded
+    @Basic
     private Instant timestamp;
 }
