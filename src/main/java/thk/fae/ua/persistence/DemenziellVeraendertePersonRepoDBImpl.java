@@ -10,13 +10,13 @@ import org.springframework.stereotype.Repository;
 
 import thk.fae.ua.core.domain.entities.DemenziellVeraendertePerson;
 import thk.fae.ua.core.domain.repositories.DemenziellVeraendertePersonRepository;
-import thk.fae.ua.infrastructure.kafka.listener.KafkaDvpListener;
+import thk.fae.ua.infrastructure.kafka.listener.DvpListener;
 
 @Repository
 @RequiredArgsConstructor
 public class DemenziellVeraendertePersonRepoDBImpl implements DemenziellVeraendertePersonRepository {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaDvpListener.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DvpListener.class);
 	private final DemenziellVeraendertePersonRepoDBBase dbBase;
 
 	@Override

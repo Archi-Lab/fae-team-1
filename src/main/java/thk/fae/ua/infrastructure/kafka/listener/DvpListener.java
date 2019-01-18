@@ -15,13 +15,13 @@ import thk.fae.ua.infrastructure.kafka.models.dvp.DvpModel;
 
 @Service
 @RequiredArgsConstructor
-public class KafkaDvpListener {
+public class DvpListener {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaDvpListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DvpListener.class);
 
     private final DemenziellVeraendertePersonRepository dvpRepository;
 
-    @KafkaListener(topics = "${kafka.topics.dvp}")
+    @KafkaListener(topics = "${kafka.topics.dvp}", containerFactory = "dvpListenerContainerFactory")
     public void receive(@Payload DvpMessageModel dvpMM) {
 
         switch (dvpMM.type) {

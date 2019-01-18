@@ -3,6 +3,8 @@ package thk.fae.ua.core.domain.valueobjects;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -10,35 +12,27 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class Lokation {
 
 	@NotNull
+	@Getter
+	@Setter
 	private Double latitude;
 
 	@NotNull
+	@Getter
+	@Setter
 	private Double longitude;
 
 	@NotNull
+	@Getter
+	@Setter
 	private Double altitude;
 
-	public double getLatitude() {
-		return this.latitude;
+	public Lokation() {
+
 	}
 
-	public void setLatitude(final Double latitude) {
+	public Lokation(@NotNull Double latitude, @NotNull Double longitude, @NotNull Double altitude) {
 		this.latitude = latitude;
-	}
-
-	public double getLongitude() {
-		return this.longitude;
-	}
-
-	public void setLongitude(final Double longitude) {
 		this.longitude = longitude;
-	}
-
-	public double getAltitude() {
-		return this.altitude;
-	}
-
-	public void setAltitude(final Double altitude) {
 		this.altitude = altitude;
 	}
 

@@ -26,8 +26,6 @@ services:
       KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9094
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - backend
 networks:

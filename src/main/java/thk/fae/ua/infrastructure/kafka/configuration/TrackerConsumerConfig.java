@@ -9,26 +9,26 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import thk.fae.ua.infrastructure.kafka.models.dvp.DvpMessageModel;
+import thk.fae.ua.infrastructure.kafka.models.tracker.TrackerMessageModel;
 
 @Configuration
 @EnableKafka
-public class DvpConsumerConfig extends StandardConsumerConfig {
+public class TrackerConsumerConfig extends StandardConsumerConfig {
 
     @Bean
-    @ConditionalOnMissingBean(name = "dvpListenerContainerFactory")
-    public ConsumerFactory<String, DvpMessageModel> dvpConsumerFactory() {
+    @ConditionalOnMissingBean(name = "trackerListenerContainerFactory")
+    public ConsumerFactory<String, TrackerMessageModel> trackerConsumerFactory() {
         return new DefaultKafkaConsumerFactory<>(
                 getConsumerConfig(),
                 new StringDeserializer(),
-                new JsonDeserializer<>(DvpMessageModel.class)
+                new JsonDeserializer<>(TrackerMessageModel.class)
         );
     }
 
-    @Bean(name = "dvpListenerContainerFactory")
-    public ConcurrentKafkaListenerContainerFactory<String, DvpMessageModel> dvpListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, DvpMessageModel> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(dvpConsumerFactory());
+    @Bean(name = "trackerListenerContainerFactory")
+    public ConcurrentKafkaListenerContainerFactory<String, TrackerMessageModel> trackerListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, TrackerMessageModel> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(trackerConsumerFactory());
         return factory;
     }
 }

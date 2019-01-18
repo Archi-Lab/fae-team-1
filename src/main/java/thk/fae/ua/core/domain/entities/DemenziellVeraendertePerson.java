@@ -3,10 +3,7 @@ package thk.fae.ua.core.domain.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +12,7 @@ import org.hibernate.annotations.FetchMode;
 
 import thk.fae.ua.core.domain.common.EntityUUID4;
 import thk.fae.ua.core.domain.common.EqualsBuilderExtension;
+import thk.fae.ua.core.domain.events.TrackerUpdateEvent;
 import thk.fae.ua.core.domain.valueobjects.Tracker;
 
 @Entity
@@ -28,6 +26,11 @@ public class DemenziellVeraendertePerson extends EntityUUID4 {
 	@Setter
 	@Embedded
 	private Tracker tracker;
+
+	@Getter
+	@Setter
+	@OneToOne
+	private TrackerUpdateEvent letzterBekannterAufenthaltsort;
 
 	@Getter
 	@Setter
