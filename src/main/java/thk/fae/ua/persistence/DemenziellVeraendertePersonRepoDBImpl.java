@@ -25,6 +25,11 @@ public class DemenziellVeraendertePersonRepoDBImpl implements DemenziellVeraende
 	}
 
 	@Override
+	public Optional<DemenziellVeraendertePerson> findByTrackerId(UUID trackerId) {
+		return this.dbBase.findOneDemenziellVeraendertePersonByTrackerTrackerId(trackerId);
+	}
+
+	@Override
 	public Iterable<DemenziellVeraendertePerson> findAll() {
 		return this.dbBase.findAll();
 	}

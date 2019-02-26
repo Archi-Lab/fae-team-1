@@ -91,4 +91,14 @@ public class DemenziellVeraendertePerson extends EntityUUID4 {
 
 		return eb.isEquals();
 	}
+
+	@Override
+	public String toString() {
+		return String.format(
+				"%1$s %2$s with UUID: %3$s",
+				/*1*/ this.vorname,
+				/*2*/ this.nachname,
+				/*3*/ this.getId()
+		);
+	}
 }
