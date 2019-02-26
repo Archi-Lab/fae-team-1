@@ -1,53 +1,31 @@
 # Ungewöhnlicher Aufenthaltsort
 
-Der Ungewöhnlicher-Aufenthalt Service umfasst die Folgenden Features:
+Der Ungewöhnlicher-Aufenthaltsort-Service umfasst die Folgenden Features:
   - Verwaltung von erlaubten Aufenthaltsorten
   - Erkennung und Meldung von ungewöhnlichen Aufenthaltsorten
 
 ## Installation
-Zur Installation müssen die Quelldateien zunächst mittles Maven kompiliert werden und anschließend das Image erstellt werden.
+Zur Installation müssen die Quelldateien zunächst unter zuhilfenahme von Maven kompiliert und anschließend das Image erstellt werden.
 ```sh
-$ mvn package
+$ mvn package -DskipTests=true
 $ docker-compose build
 ```
 
-Wir verwenden Docker Swarm und benötigen aus diesem Grund eine Swarm fähige Version von Kafka.
-Dieser Kann durch das beiliegende kafka-swarm.yml erstellt werden. Zuvor muss Docker jedoch in den Swarm Modus versetzt werden.
+Standardmäßig sollte ein Microservice immer mit mindestens zwei Instanzen getestet und betrieben werden, um sicherzustellen, dass die Skalierung des Services zu keinerlei Komplikationen führt. Durch den Folgenden Aufruf, wird der Ungewöhnlicher-Aufenthalt-Service und seine direkten Abhängigkeiten gestartet. Die Anzahl der Instanzen für den ua-service kann hierbei beliebig verändert werden, bzw. der --scale Befehl optional auch weggelassen oder auf 1 gesetzt werden. Dies ist Aufgrund der zuvor gennanten Gründe allerdings nicht zu empfehlen.
+
 ```sh
-$ docker swarm init
+$ docker-compose up --scale ua-service=2
 ```
 
-Anschließend kann der Kafka Swarm Service erstellt und ausgeführt werden:
-```sh
-$ docker stack deploy -c kafka-swarm.yml fae-message-broker
-```
+Neben der ua-service Instanzen werden durch den o.g. Befehl auch noch weitere Container angelegt. Hierbei handelt es sich zum einen um einen Postgres, welcher den ua-service Instanzen als Datenbank dient. Zum anderen wird zusätzlich ein HAProxy erzeugt, dieser dient als Loadbalancer, um eingehende REST Aufrufe in Richtung der ua-service Instanzen zu orchestrieren. Der Proxy ist nach außen (auf dem Host) über den Standardport 80 erreichbar.
 
-Der Ungewöhnlicher-Aufenthalt Service wird auf gleichem Wege gestartet:
-```sh
-$ docker stack deploy -c docker-compose.yml fae-ua
-```
-
-Standardmäßig werden zwei Instanzen des Ungewöhnlicher-Aufenthalt Service gestartet. Diesen steht eine Postgres Instanz als Datenbank zur Verfügung. Die Instanzen des Ungewöhnlicher-Aufenthalt Service sind über einen HAProxy als Loadbalancer derzeit über Port 80 (Host) erreichbar. Eine beliebige Skalierung der Instanzen ist über den folgenden Docker Befehl möglich:
-```sh
-$ docker service scale fae-ua_ungewoehnlicher-aufenthaltsort=4
-```
-Die Anzahl der Instanzen kann hierbei beliebig verändert werden.
-
-Das stoppen der Services erfolgt durch:
-```sh
-$ docker stack rm fae-ua
-$ docker stack rm fae-message-broker
-```
 
 Der Ungewöhnlicher-Aufenthalt Service benötigt zudem eine Reihe von anderen Komponenten, bevor er Ordnungsgemäß funktionieren kann.
 
 ### Erforderliche Komponenten aus anderen Sub-Domänen
+* [Message Broker][FAE-kafka] - Stellt das Messaging Backend basierend auf Apache Kafka bereit
 * [Draußen Ortung][FAE-ortung] - Publiziert aktuelle Aufenthaltsorter von GPS-Trackern
 * [Dementiell Veränderte Person][FAE-dvp] - Verwaltet Daten über dementiell veränderte Personen
-
-
-## Benutzung
-Hier sollte die Benutzung des Services evtl. durch ein Beispiel unterstützt beschrieben werden.
 
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
