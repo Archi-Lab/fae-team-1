@@ -6,7 +6,7 @@ import thk.fae.ua.core.domain.valueobjects.Lokation;
 import java.time.Instant;
 
 public class UngewoehnlicherAufenthaltsortEvent {
-    DemenziellVeraendertePerson dvp;
-    Instant timestamp;
-    Lokation lokation;
+    public DemenziellVeraendertePerson dvp;
+    public Instant timestamp;
+    public Lokation lokation;
 }

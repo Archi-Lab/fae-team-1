@@ -5,8 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import thk.fae.ua.core.application.interfaces.TrackerService;
+import thk.fae.ua.core.application.interfaces.UAEventPublisherService;
 import thk.fae.ua.core.domain.entities.DemenziellVeraendertePerson;
 import thk.fae.ua.core.domain.events.TrackerUpdateEvent;
+import thk.fae.ua.core.domain.events.UngewoehnlicherAufenthaltsortEvent;
 import thk.fae.ua.core.domain.repositories.DemenziellVeraendertePersonRepository;
 import thk.fae.ua.core.domain.valueobjects.Tracker;
 
@@ -19,6 +21,7 @@ public class TrackerServiceImplementation implements TrackerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TrackerService.class);
 
     private final DemenziellVeraendertePersonRepository dvpRepository;
+    private final UAEventPublisherService uaService;
 
     @Override
     public void handleTrackerUpdate(TrackerUpdateEvent event) {
@@ -33,6 +36,8 @@ public class TrackerServiceImplementation implements TrackerService {
         // TODO SET DVP LAST KNOWN LOCATION TO TRACKER LOCATION
 
         // TODO CHECK IF DVP IS "OUT OF BOUNDS"
+
+        uaService.publishUAEvent(new UngewoehnlicherAufenthaltsortEvent());
 
     }
 
