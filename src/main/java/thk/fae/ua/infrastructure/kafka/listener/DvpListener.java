@@ -44,6 +44,7 @@ public class DvpListener {
     }
 
     public void createNew(DvpModel dvpModel) {
+        LOGGER.info("Creating new DVP with id: {}", dvpModel.id);
         DemenziellVeraendertePerson dvp = new DemenziellVeraendertePerson();
         dvp.setId(dvpModel.id);
         applyChanges(dvp, dvpModel);

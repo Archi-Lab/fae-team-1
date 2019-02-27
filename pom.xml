@@ -59,6 +59,10 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.google.maps.android</groupId>
+			<artifactId>android-maps-utils</artifactId>
+		</dependency>
 
 		<!-- Testing -->
 		<dependency>

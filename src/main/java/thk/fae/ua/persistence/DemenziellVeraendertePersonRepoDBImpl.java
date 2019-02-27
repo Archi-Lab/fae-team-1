@@ -36,7 +36,6 @@ public class DemenziellVeraendertePersonRepoDBImpl implements DemenziellVeraende
 
 	@Override
 	public DemenziellVeraendertePerson save(final DemenziellVeraendertePerson dvp) {
-		LOGGER.info("SAVING DVP with id: {}", dvp.getId());
 		return this.dbBase.save(dvp);
 	}
 

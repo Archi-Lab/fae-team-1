@@ -29,7 +29,7 @@ public class DemenziellVeraendertePerson extends EntityUUID4 {
 
 	@Getter
 	@Setter
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private TrackerUpdateEvent letzterBekannterAufenthaltsort;
 
 	@Getter
@@ -84,6 +84,7 @@ public class DemenziellVeraendertePerson extends EntityUUID4 {
 
 		eb.append(this.getVersion(), other.getVersion());
 		eb.append(this.getTracker(), other.getTracker());
+		eb.append(this.getLetzterBekannterAufenthaltsort(), other.getLetzterBekannterAufenthaltsort());
 		eb.append(this.getVorname(), other.getVorname());
 		eb.append(this.getNachname(), other.getNachname());
 		eb.append(this.getOrte(), other.getOrte());
