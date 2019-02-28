@@ -1,8 +1,8 @@
 # Ungewöhnlicher Aufenthaltsort
 
 Der Ungewöhnlicher-Aufenthaltsort-Service umfasst die Folgenden Features:
-  - Verwaltung von erlaubten Aufenthaltsorten
-  - Erkennung und Meldung von ungewöhnlichen Aufenthaltsorten
+  - Verwaltung von gewöhnlichen Aufenthaltsorten in der Form von Orten und Routen
+  - Erkennung und Benachrichtigung bei ungewöhnlichen Aufenthaltsorten
 
 ## Installation
 Zur Installation müssen die Quelldateien zunächst unter zuhilfenahme von Maven kompiliert und anschließend das Image erstellt werden.
