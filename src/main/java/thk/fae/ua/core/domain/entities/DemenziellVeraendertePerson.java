@@ -13,6 +13,7 @@ import org.hibernate.annotations.FetchMode;
 import thk.fae.ua.core.domain.common.EntityUUID4;
 import thk.fae.ua.core.domain.common.EqualsBuilderExtension;
 import thk.fae.ua.core.domain.events.TrackerUpdateEvent;
+import thk.fae.ua.core.domain.events.UngewoehnlicherAufenthaltsortEvent;
 import thk.fae.ua.core.domain.valueobjects.Tracker;
 
 @Entity
@@ -31,6 +32,12 @@ public class DemenziellVeraendertePerson extends EntityUUID4 {
 	@Setter
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private TrackerUpdateEvent letzterBekannterAufenthaltsort;
+
+	@Getter
+	@Setter
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private UngewoehnlicherAufenthaltsortEvent ungewoehnlicherAufenthaltsort;
+
 
 	@Getter
 	@Setter
@@ -85,6 +92,7 @@ public class DemenziellVeraendertePerson extends EntityUUID4 {
 		eb.append(this.getVersion(), other.getVersion());
 		eb.append(this.getTracker(), other.getTracker());
 		eb.append(this.getLetzterBekannterAufenthaltsort(), other.getLetzterBekannterAufenthaltsort());
+		eb.append(this.getUngewoehnlicherAufenthaltsort(), other.getUngewoehnlicherAufenthaltsort());
 		eb.append(this.getVorname(), other.getVorname());
 		eb.append(this.getNachname(), other.getNachname());
 		eb.append(this.getOrte(), other.getOrte());

@@ -60,10 +60,24 @@ public class UAErkennungServiceImplementation implements UAErkennungService {
                 if(dvpIstAnUA) {
                     LOGGER.info("DVP {} befindet sich an einem unbekanntem Aufenthaltsort!", dvp.toString());
                     UngewoehnlicherAufenthaltsortEvent uaevent = new UngewoehnlicherAufenthaltsortEvent();
-                    uaevent.dvp = dvp;
-                    uaevent.lokation = aufenthaltsort;
-                    uaevent.timestamp = Instant.now();
-                    uaService.publishUAEvent(uaevent);
+                    uaevent.setDvpId(dvp.getId());
+                    uaevent.setLokation(aufenthaltsort);
+                    uaevent.setTimestamp(Instant.now());
+                    uaevent.setPubliziert(false);
+
+                    if(dvp.getUngewoehnlicherAufenthaltsort() != null) {
+                        // TODO debounce z.B. nach verstrichener Zeit steuern
+                        if(!dvp.getUngewoehnlicherAufenthaltsort().isPubliziert()) {
+                            uaevent.setPubliziert(true);
+                            dvp.setUngewoehnlicherAufenthaltsort(uaevent);
+                            uaService.publishUAEvent(uaevent);
+                        } else {
+                            LOGGER.info("DVP {} UAEvent bereits publiziert", dvp.toString());
+                        }
+                    } else {
+                        dvp.setUngewoehnlicherAufenthaltsort(uaevent);
+                    }
+                    dvpRepository.save(dvp);
                 }
 
             } else {
@@ -75,6 +89,7 @@ public class UAErkennungServiceImplementation implements UAErkennungService {
     private boolean dvpBefindetSichAufRoute(Lokation standort, Route route) {
         List<LatLng> polyline = LokationenZuLatLngs(route.getLokationen());
         LatLng location = LokationZuLatLng(standort);
+        // Die "breite" der Route ist 10 Meter, daher die 5 bei tolerance
         return PolyUtil.isLocationOnPath(location, polyline, true, 5);
     }
 
@@ -83,6 +98,7 @@ public class UAErkennungServiceImplementation implements UAErkennungService {
         if(ort.getLokation() == null) {
             LatLng ortLocation = LokationZuLatLng(ort.getLokation());
             double distance = computeDistanceBetween(ortLocation, location);
+            // Die DVP muss sich in einem 15 Meter Radius um den spezifizierten Marker aufhalten
             return distance <= 15;
         } else {
             List<LatLng> polygon = LokationenZuLatLngs(ort.getBereich());
