@@ -7,7 +7,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
-import thk.fae.ua.core.application.interfaces.TrackerService;
+import thk.fae.ua.core.application.interfaces.TrackerEventService;
 import thk.fae.ua.core.domain.events.TrackerUpdateEvent;
 import thk.fae.ua.core.domain.valueobjects.Lokation;
 import thk.fae.ua.core.domain.valueobjects.Tracker;
@@ -22,7 +22,7 @@ public class TrackerListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TrackerListener.class);
 
-    private final TrackerService trackerService;
+    private final TrackerEventService trackerService;
 
     @KafkaListener(topics = "${kafka.topics.tracker}", containerFactory = "trackerListenerContainerFactory")
     public void receive(@Payload TrackerMessageModel trackerMessageModel) {

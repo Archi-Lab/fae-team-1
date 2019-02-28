@@ -1,4 +1,4 @@
-package thk.fae.ua.persistence;
+package thk.fae.ua.persistence.ort;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -23,8 +23,19 @@ public class OrtRepoDBImpl implements OrtRepository {
 	}
 
 	@Override
+	public Iterable<Ort> findByDvpId(UUID dvpId) {
+		return this.dbBase.findAllByDemenziellVeraendertePerson_Id(dvpId);
+	}
+
+	@Override
 	public Ort save(final Ort ort) {
 		return this.dbBase.save(ort);
 	}
+
+	@Override
+	public void deleteById(UUID id) { this.dbBase.deleteById(id); }
+
+	@Override
+	public boolean existsById(UUID id) { return this.existsById(id); }
 
 }

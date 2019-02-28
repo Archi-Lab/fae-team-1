@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import thk.fae.ua.core.application.interfaces.TrackerService;
+import thk.fae.ua.core.application.interfaces.TrackerEventService;
 import thk.fae.ua.core.application.interfaces.UAErkennungService;
 import thk.fae.ua.core.domain.entities.DemenziellVeraendertePerson;
 import thk.fae.ua.core.domain.events.TrackerUpdateEvent;
@@ -14,9 +14,9 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class TrackerServiceImplementation implements TrackerService {
+public class TrackerEventServiceImplementation implements TrackerEventService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TrackerService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TrackerEventService.class);
 
     private final DemenziellVeraendertePersonRepository dvpRepository;
     private final UAErkennungService uaService;

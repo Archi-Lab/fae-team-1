@@ -1,4 +1,4 @@
-package thk.fae.ua.persistence;
+package thk.fae.ua.persistence.route;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -23,7 +23,18 @@ public class RouteRepoDBImpl implements RouteRepository {
 	}
 
 	@Override
+	public Iterable<Route> findByDvpId(UUID dvpId) {
+		return this.dbBase.findAllByDemenziellVeraendertePerson_Id(dvpId);
+	}
+
+	@Override
 	public Route save(final Route route) {
 		return this.dbBase.save(route);
 	}
+
+	@Override
+	public void deleteById(UUID id) { this.dbBase.deleteById(id); }
+
+	@Override
+	public boolean existsById(UUID id) { return this.dbBase.existsById(id); }
 }

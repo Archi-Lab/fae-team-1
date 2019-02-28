@@ -1,4 +1,4 @@
-package thk.fae.ua.persistence;
+package thk.fae.ua.persistence.dvp;
 
 import java.util.Optional;
 import java.util.UUID;
